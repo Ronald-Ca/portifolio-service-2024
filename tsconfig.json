@@ -1,0 +1,54 @@
+{
+  "compilerOptions": {
+    "typeRoots": [
+      "./types"
+    ],
+    // BUILD
+    "moduleResolution": "node",
+    "strict": true,
+    "sourceMap": true,
+    "outDir": "./build",
+    "strictPropertyInitialization": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "esModuleInterop": true,
+    "inlineSources": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    // -----------
+    "target": "ES2021",
+    "module": "commonjs",
+    "rootDir": "./",
+    "forceConsistentCasingInFileNames": true,
+    "paths": {
+      "@middlewares/*": [
+        "./src/middlewares/*"
+      ],
+      "@routes/*": [
+        "./src/routes/*"
+      ],
+      "@models/*": [
+        "./src/models/*"
+      ],
+      "@controllers/*": [
+        "./src/controllers/*"
+      ],
+      "@utils/*": [
+        "./src/utils/*"
+      ],
+      "@prisma/*": [
+        "./prisma/*"
+      ],
+      "@logger/*": [
+        "./logger/*"
+      ],
+    }
+  },
+  "exclude": [
+    "node_modules",
+  ]
+}
