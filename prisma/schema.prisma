@@ -1,14 +1,127 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
+}
+
+model Home {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  title       String
+  role        String
+  description String?
+  image       String?
+
+  @@map("homes")
+}
+
+model About {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  person    String
+  education String
+  address   String
+
+  @@map("abouts")
+}
+
+model Experience {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  company    String
+  period     String
+  role       String
+  activities String[]
+  stacks     String[]
+
+  @@map("experiences")
+}
+
+model Skill {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name       String
+  level      Int
+  experience Int
+  type       String
+
+  stackId String @db.ObjectId
+  stack   Stack  @relation(fields: [stackId], references: [id])
+
+  @@map("skills")
+}
+
+model Project {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name        String
+  image       String
+  video       String?
+  description String
+  link        String
+
+  stacktId String? @db.ObjectId
+  stack    Stack?  @relation(fields: [stacktId], references: [id])
+
+  @@map("projects")
+}
+
+model Stack {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name  String
+  icon  String
+  color String
+
+  Skills  Skill[]
+  Project Project[]
+
+  @@map("stacks")
+}
+
+model Contact {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name    String
+  phone   String
+  email   String
+  subject String
+  message String
+}
+
+model SocialMedia {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name  String?
+  link  String
+  icon  String
+  color String?
+}
+
+model User {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  email    String
+  password String
 }
