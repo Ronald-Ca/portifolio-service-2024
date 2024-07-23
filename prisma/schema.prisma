@@ -25,6 +25,7 @@ model About {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  image     String
   person    String
   education String
   address   String
