@@ -1,19 +1,19 @@
 import InternalError from "@utils/internalError"
-import HomeService from "../services/home-service"
 import { Request, Response } from 'express'
 import { responseError, responseSuccess } from "@utils/jsonResponse"
 import fileUpload from "express-fileupload"
 import Upload, { CloudinaryUploadResult } from "../integrations/cloudnary"
-import { createHome } from "../zod-validations/home/create-home"
-import { updateHome } from "../zod-validations/home/update-home"
 import { validId } from "../zod-validations/global/valid-id"
+import AboutService from "../services/about-service"
+import { createAbout } from "../zod-validations/about/create-about"
+import { updateAbout } from "../zod-validations/about/update-about"
 
-export default class HomeController {
-    private _homeService = new HomeService()
+export default class AboutController {
+    private _aboutService = new AboutService()
 
-    async getHome(_: Request, res: Response) {
+    async getAbout(_: Request, res: Response) {
         try {
-            const response = await this._homeService.getHome()
+            const response = await this._aboutService.getAbout()
 
             return res.status(200).json(responseSuccess('Success', response))
         } catch (error) {
@@ -24,16 +24,16 @@ export default class HomeController {
 
     async create(req: Request, res: Response) {
         try {
-            const { title, role, description } = createHome.parse(req.body)
+            const { person, education, address } = createAbout.parse(req.body)
 
             const image = req.files?.image as fileUpload.UploadedFile
 
-            const response = await this._homeService.create({ title, role, description })
+            const response = await this._aboutService.create({ person, education, address })
 
             if (image) {
-                const imageUpload = await Upload(image, 'home') as CloudinaryUploadResult
+                const imageUpload = await Upload(image, 'about') as CloudinaryUploadResult
                 if (!imageUpload) return res.status(400).json(responseError(['Error uploading image']))
-                await this._homeService.update(response.id, { image: imageUpload.secure_url })
+                await this._aboutService.update(response.id, { image: imageUpload.secure_url })
                 return res.status(200).json(responseSuccess('Success', response))
             }
 
@@ -48,21 +48,21 @@ export default class HomeController {
     async update(req: Request, res: Response) {
         try {
             const { id } = validId.parse(req.params)
-            const { title, role, description } = updateHome.parse(req.body)
+            const { person, education, address } = updateAbout.parse(req.body)
             const image = req.files?.image as fileUpload.UploadedFile
 
-            const home = await this._homeService.getHomeById(id)
-            if (!home) return res.status(404).json(responseError(['Home not found']))
+            const home = await this._aboutService.getAboutById(id)
+            if (!home) return res.status(404).json(responseError(['About not found']))
 
-            const updatedHome = await this._homeService.update(id, { title, role, description })
+            const response = await this._aboutService.update(id, { person, education, address })
             if (image) {
                 const imageUpload = await Upload(image, 'anime') as CloudinaryUploadResult
                 if (!imageUpload) return res.status(400).json(responseError(['Error uploading image']))
-                await this._homeService.update(id, { image: imageUpload.secure_url })
-                return res.status(200).json(responseSuccess('Home updated', updatedHome))
+                await this._aboutService.update(id, { image: imageUpload.secure_url })
+                return res.status(200).json(responseSuccess('About updated', response))
             }
 
-            return res.status(200).json(responseSuccess('Home updated', updatedHome))
+            return res.status(200).json(responseSuccess('About updated', response))
         } catch (error) {
             if (error instanceof InternalError) throw new InternalError(error.message)
             throw error
