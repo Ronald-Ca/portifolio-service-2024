@@ -9,6 +9,12 @@ export default class HomeService {
         return data
     }
 
+    async getHomeById(id: string) {
+        const data = await PrismaService.home.findUnique({ where: { id } })
+
+        return data
+    }
+
     async create(home: Prisma.HomeCreateInput) {
         const data = await PrismaService.home.create({ data: home })
 
