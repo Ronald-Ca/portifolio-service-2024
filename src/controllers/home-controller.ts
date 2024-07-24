@@ -1,9 +1,12 @@
-import InternalError from "@utils/internalError";
-import HomeService from "../services/home-service";
+import InternalError from "@utils/internalError"
+import HomeService from "../services/home-service"
 import { Request, Response } from 'express'
-import { responseError, responseSuccess } from "@utils/jsonResponse";
-import fileUpload from "express-fileupload";
-import Upload, { CloudinaryUploadResult } from "../integrations/cloudnary";
+import { responseError, responseSuccess } from "@utils/jsonResponse"
+import fileUpload from "express-fileupload"
+import Upload, { CloudinaryUploadResult } from "../integrations/cloudnary"
+import { createHome } from "../zod-validations/home/create-home"
+import { updateHome } from "../zod-validations/home/update-home"
+import { validId } from "../zod-validations/global/valid-id"
 
 export default class HomeController {
     private _homeService = new HomeService()
@@ -21,7 +24,7 @@ export default class HomeController {
 
     async create(req: Request, res: Response) {
         try {
-            const { title, role, description } = req.body
+            const { title, role, description } = createHome.parse(req.body)
 
             const image = req.files?.image as fileUpload.UploadedFile
 
@@ -44,8 +47,8 @@ export default class HomeController {
 
     async update(req: Request, res: Response) {
         try {
-            const { id } = req.params
-            const { title, role, description } = req.body
+            const { id } = validId.parse(req.params)
+            const { title, role, description } = updateHome.parse(req.body)
             const image = req.files?.image as fileUpload.UploadedFile
 
             const home = await this._homeService.getHomeById(id)
