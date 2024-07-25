@@ -51,8 +51,8 @@ export default class AboutController {
             const { person, education, address } = updateAbout.parse(req.body)
             const image = req.files?.image as fileUpload.UploadedFile
 
-            const home = await this._aboutService.getAboutById(id)
-            if (!home) return res.status(404).json(responseError(['About not found']))
+            const about = await this._aboutService.getAboutById(id)
+            if (!about) return res.status(404).json(responseError(['About not found']))
 
             const response = await this._aboutService.update(id, { person, education, address })
             if (image) {
