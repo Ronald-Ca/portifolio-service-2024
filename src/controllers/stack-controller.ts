@@ -38,12 +38,12 @@ export default class StackController {
             const { id } = validId.parse(req.params)
             const { name, icon, color } = updateStack.parse(req.body)
 
-            const about = await this._stackService.getById(id)
-            if (!about) return res.status(404).json(responseError(['Stack not found']))
+            const stack = await this._stackService.getById(id)
+            if (!stack) return res.status(404).json(responseError(['Stack not found']))
 
             const response = await this._stackService.update(id, { name, icon, color })
 
-            return res.status(200).json(responseSuccess('About updated', response))
+            return res.status(200).json(responseSuccess('Stack updated', response))
         } catch (error) {
             if (error instanceof InternalError) throw new InternalError(error.message)
             throw error
