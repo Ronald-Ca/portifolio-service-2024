@@ -22,9 +22,17 @@ export default class ExperienceController {
 
     async create(req: Request, res: Response) {
         try {
-            const { company, period, role, activities, stacks } = createExperience.parse(req.body)
+            const { company, period, role, activities, stackIds } = createExperience.parse(req.body)
 
-            const response = await this._experienceService.create({ company, period, role, activities, stacks })
+            const response = await this._experienceService.create({
+                company,
+                period,
+                role,
+                activities,
+                stacks: {
+                    create: stackIds.map((stackId: string) => ({ stackId }))
+                }
+            })
 
             return res.status(200).json(responseSuccess('Success', response))
         } catch (error) {
@@ -36,12 +44,12 @@ export default class ExperienceController {
     async update(req: Request, res: Response) {
         try {
             const { id } = validId.parse(req.params)
-            const { company, period, role, activities, stacks } = updateExperience.parse(req.body)
+            const { company, period, role, activities } = updateExperience.parse(req.body)
 
             const experience = await this._experienceService.getById(id)
             if (!experience) return res.status(404).json(responseError(['Experience not found']))
 
-            const response = await this._experienceService.update(id, { company, period, role, activities, stacks })
+            const response = await this._experienceService.update(id, { company, period, role, activities })
 
             return res.status(200).json(responseSuccess('Experience updated', response))
         } catch (error) {

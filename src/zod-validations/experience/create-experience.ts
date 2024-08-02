@@ -5,5 +5,5 @@ export const createExperience = z.object({
     period: z.string().min(3).max(255),
     role: z.string().min(3).max(255),
     activities: z.string().array(),
-    stacks: z.string().array(),
+    stackIds: z.string().array()
 })
