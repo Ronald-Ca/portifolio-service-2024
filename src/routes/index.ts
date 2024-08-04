@@ -5,6 +5,8 @@ import experience from './experience'
 import stack from './stack'
 import social from './social-media'
 import user from './user'
+import skill from './skill'
+import project from './project'
 
 const server = express()
 
@@ -14,5 +16,7 @@ server.use('/experience', experience)
 server.use('/stack', stack)
 server.use('/social-media', social)
 server.use('/user', user)
+server.use('/skill', skill)
+server.use('/project', project)
 
 export default server

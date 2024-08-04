@@ -75,8 +75,7 @@ model Project {
   description String
   link        String
 
-  stacktId String? @db.ObjectId
-  stack    Stack?  @relation(fields: [stacktId], references: [id])
+  stacks ProjectStack[]
 
   @@map("projects")
 }
@@ -91,8 +90,8 @@ model Stack {
   color String
 
   skills      Skill[]
-  projects    Project[]
   experiences ExperienceStack[]
+  projects    ProjectStack[]
 
   @@map("stacks")
 }
@@ -106,6 +105,17 @@ model ExperienceStack {
 
   @@unique([experienceId, stackId])
   @@map("experience_stack")
+}
+
+model ProjectStack {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  project   Project @relation(fields: [projectId], references: [id])
+  projectId String  @db.ObjectId
+  stack     Stack   @relation(fields: [stackId], references: [id])
+  stackId   String  @db.ObjectId
+
+  @@unique([projectId, stackId])
+  @@map("project_stack")
 }
 
 model Contact {
