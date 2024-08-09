@@ -6,7 +6,6 @@ import { createUser } from "../zod-validations/user/create-user"
 import { validId } from "../zod-validations/global/valid-id"
 import { updateUser } from "../zod-validations/user/update-user"
 import { authenticateUser } from "../zod-validations/user/authenticate-user"
-import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
 export default class UserController {
@@ -59,20 +58,36 @@ export default class UserController {
     async authenticate(req: Request, res: Response) {
         try {
             const { email, password } = authenticateUser.parse(req.body)
+            console.log(req.body)
 
             const result = await this._userService.getByEmail(email)
             if (!result) return res.status(400).json(responseError(['User not found']))
             if (!result || !result.password) return res.status(400).json(responseError(['Invalid User or Invalid password']))
 
-            if (!(await bcrypt.compare(password, result.password))) return res.status(400).json(responseError(['Invalid User or Invalid password']))
+            if (password !== result.password) return res.status(400).json(responseError(['Invalid User or Invalid password']))
+            // if (!(await bcrypt.compare(password, result.password))) return res.status(400).json(responseError(['Invalid User or Invalid password']))
 
             result.password = ''
 
             if (!result.active) return res.status(400).json(responseError(['User is inactive, contact the administrator']))
 
             const token = jwt.sign({ id: result.id }, <string>process.env.AUTH_SECRET, { expiresIn: 5000 })
+            console.log('token', token)
 
             return res.status(200).json(responseSuccess('Success', { user: result, token }))
+        } catch (error) {
+            if (error instanceof InternalError) throw new InternalError(error.message)
+            throw error
+        }
+    }
+
+    async validateToken(req: Request, res: Response) {
+        try {
+            const { email, token } = req.body
+            const result = await this._userService.getByEmail(email)
+            if (!result) return res.status(400).json(responseError(['User not found']))
+            result.password = ''
+            return res.status(200).json(responseSuccess('Token válido', { token: token, usuario: result }))
         } catch (error) {
             if (error instanceof InternalError) throw new InternalError(error.message)
             throw error

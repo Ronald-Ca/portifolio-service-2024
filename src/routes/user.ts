@@ -6,6 +6,7 @@ const controller = new UserController()
 
 router.get('/get', (req: Request, res: Response, next: NextFunction) => { controller.getUser(req, res).catch((erro) => next(erro)) })
 router.post('/authenticate', (req: Request, res: Response, next: NextFunction) => { controller.authenticate(req, res).catch((erro) => next(erro)) })
+router.post('/validate-token', (req: Request, res: Response, next: NextFunction) => { controller.validateToken(req, res).catch((erro) => next(erro)) })
 router.post('/create', (req: Request, res: Response, next: NextFunction) => { controller.create(req, res).catch((erro) => next(erro)) })
 router.put('/update/:id', (req: Request, res: Response, next: NextFunction) => { controller.update(req, res).catch((erro) => next(erro)) })
 
