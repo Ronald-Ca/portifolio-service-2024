@@ -27,15 +27,9 @@ export default class HomeController {
             const { title, role, description } = createHome.parse(req.body)
 
             const image = req.files?.image as fileUpload.UploadedFile
+            const imageUpload = await Upload(image, 'home') as CloudinaryUploadResult
 
-            const response = await this._homeService.create({ title, role, description })
-
-            if (image) {
-                const imageUpload = await Upload(image, 'home') as CloudinaryUploadResult
-                if (!imageUpload) return res.status(400).json(responseError(['Error uploading image']))
-                await this._homeService.update(response.id, { image: imageUpload.secure_url })
-                return res.status(200).json(responseSuccess('Success', response))
-            }
+            const response = await this._homeService.create({ title, role, description, image: imageUpload.secure_url })
 
             return res.status(200).json(responseSuccess('Success', response))
 
@@ -49,18 +43,19 @@ export default class HomeController {
         try {
             const { id } = validId.parse(req.params)
             const { title, role, description } = updateHome.parse(req.body)
+
             const image = req.files?.image as fileUpload.UploadedFile
+            const imageUpload = image && await Upload(image, 'home') as CloudinaryUploadResult
 
             const home = await this._homeService.getHomeById(id)
             if (!home) return res.status(404).json(responseError(['Home not found']))
 
-            const updatedHome = await this._homeService.update(id, { title, role, description })
-            if (image) {
-                const imageUpload = await Upload(image, 'anime') as CloudinaryUploadResult
-                if (!imageUpload) return res.status(400).json(responseError(['Error uploading image']))
-                await this._homeService.update(id, { image: imageUpload.secure_url })
-                return res.status(200).json(responseSuccess('Home updated', updatedHome))
-            }
+            const updatedHome = await this._homeService.update(id, {
+                title,
+                role,
+                description,
+                image: imageUpload ? imageUpload.secure_url : home.image
+            })
 
             return res.status(200).json(responseSuccess('Home updated', updatedHome))
         } catch (error) {

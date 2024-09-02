@@ -58,7 +58,6 @@ export default class UserController {
     async authenticate(req: Request, res: Response) {
         try {
             const { email, password } = authenticateUser.parse(req.body)
-            console.log(req.body)
 
             const result = await this._userService.getByEmail(email)
             if (!result) return res.status(400).json(responseError(['User not found']))
@@ -72,7 +71,6 @@ export default class UserController {
             if (!result.active) return res.status(400).json(responseError(['User is inactive, contact the administrator']))
 
             const token = jwt.sign({ id: result.id }, <string>process.env.AUTH_SECRET, { expiresIn: 5000 })
-            console.log('token', token)
 
             return res.status(200).json(responseSuccess('Success', { user: result, token }))
         } catch (error) {

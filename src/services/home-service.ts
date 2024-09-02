@@ -4,7 +4,7 @@ import { PrismaService } from '@prisma/prisma-service'
 export default class HomeService {
 
     async getHome() {
-        const data = await PrismaService.home.findMany()
+        const data = await PrismaService.home.findFirst()
 
         return data
     }
