@@ -4,7 +4,7 @@ import { PrismaService } from '@prisma/prisma-service'
 export default class AboutService {
 
     async getAbout() {
-        const data = await PrismaService.about.findMany()
+        const data = await PrismaService.about.findFirst()
 
         return data
     }

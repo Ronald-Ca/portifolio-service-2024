@@ -27,9 +27,9 @@ export default class AboutController {
             const { person, education, address } = createAbout.parse(req.body)
 
             const image = req.files?.image as fileUpload.UploadedFile
-            const imageUpload = await Upload(image, 'about') as CloudinaryUploadResult
+            const imageUpload = image && await Upload(image, 'about') as CloudinaryUploadResult
 
-            const response = await this._aboutService.create({ person, education, address, image: imageUpload.secure_url })
+            const response = await this._aboutService.create({ person, education, address, image: imageUpload ?  imageUpload.secure_url : '' })
 
             return res.status(200).json(responseSuccess('Success', response))
 
