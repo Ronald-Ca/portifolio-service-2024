@@ -33,6 +33,16 @@ model About {
   @@map("abouts")
 }
 
+model Curriculum {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  curriculum String
+
+  @@map("curriculums")
+}
+
 model Experience {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   createdAt DateTime @default(now())
