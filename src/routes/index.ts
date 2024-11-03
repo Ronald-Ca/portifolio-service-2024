@@ -7,6 +7,7 @@ import social from './social-media'
 import user from './user'
 import skill from './skill'
 import project from './project'
+import curriculum from './curriculum'
 
 const server = express()
 
@@ -18,5 +19,6 @@ server.use('/social-media', social)
 server.use('/user', user)
 server.use('/skill', skill)
 server.use('/project', project)
+server.use('/curriculum', curriculum)
 
 export default server

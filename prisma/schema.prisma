@@ -39,6 +39,8 @@ model Curriculum {
   updatedAt DateTime @updatedAt
 
   curriculum String
+  fileName   String
+  publicId   String?
 
   @@map("curriculums")
 }

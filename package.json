@@ -9,7 +9,8 @@
     "dev": "tsx watch src/server.ts",
     "start": "ts-node src/server.ts",
     "push": "prisma db push",
-    "prisma:generate": "prisma generate"
+    "prisma:generate": "prisma generate",
+    "studio": "npx prisma studio"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
