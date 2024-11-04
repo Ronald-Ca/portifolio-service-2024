@@ -62,17 +62,24 @@ export default class CurriculumController {
 
     async downloadCurriculum(req: Request, res: Response) {
         try {
-            const { id } = validId.parse(req.params)
-
-            const curriculum = await this._curriculumService.getCurriculumById(id)
-            if (!curriculum) return res.status(404).json(responseError(['Curriculum not found']))
-
-            const reponse = await Download(curriculum.publicId as string)
-
-            return res.status(200).json(responseSuccess('Success', reponse))
+            const { id } = validId.parse(req.params);
+            const curriculum = await this._curriculumService.getCurriculumById(id);
+    
+            if (!curriculum) {
+                return res.status(404).json(responseError(['Curriculum not found']));
+            }
+    
+            // Obtenha a URL de download do PDF com fl_attachment
+            const response = await Download(curriculum.publicId as string) as CloudinaryUploadResult;
+            
+            // Redireciona o cliente para o link de download
+            return res.status(200).json(responseSuccess('Download link generated', { download_url: response.secure_url }));
+            
         } catch (error) {
-            if (error instanceof InternalError) throw new InternalError(error.message)
-            throw error
+            if (error instanceof InternalError) throw new InternalError(error.message);
+            throw error;
         }
     }
+    
+    
 }

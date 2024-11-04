@@ -8,11 +8,9 @@ export default function Upload(file: any, folder: string) {
             api_secret: process.env.CLOUD_API_SECRET
         })
 
-        // Converta os dados do arquivo em uma string base64
         const fileData = file.data.toString('base64')
 
-        // Faça o upload dos dados para o Cloudinary
-        cloudinary.uploader.upload(`data:${file.mimetype};base64,${fileData}`, { folder: folder, resource_type: 'auto' }, (error: any, result: any) => {
+        cloudinary.uploader.upload(`data:${file.mimetype};base64,${fileData}`, { folder: folder, resource_type: 'image' }, (error: any, result: any) => {
             if (error) {
                 reject(error)
             } else {
@@ -22,22 +20,24 @@ export default function Upload(file: any, folder: string) {
     })
 }
 
+
 export function Download(publicId: string) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         cloudinary.config({
             cloud_name: process.env.CLOUD_NAME,
             api_key: process.env.CLOUD_API_KEY,
             api_secret: process.env.CLOUD_API_SECRET
-        })
+        });
 
-        cloudinary.api.resource(publicId, (error: any, result: any) => {
-            if (error) {
-                reject(error)
-            } else {
-                resolve(result)
-            }
-        })
-    })
+        const downloadUrl = cloudinary.url(publicId, {
+            flags: 'attachment:curriculum', 
+            secure: true,
+            fetch_format: 'auto', 
+            format: 'pdf' 
+        });
+
+        resolve({ secure_url: downloadUrl });
+    });
 }
 
 
