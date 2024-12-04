@@ -22,9 +22,11 @@ export default class SkillController {
 
     async create(req: Request, res: Response) {
         try {
-            const { name, level, experience, type, stackId } = createSkill.parse(req.body)
+            const { name, level, experience, type, color, icon } = createSkill.parse(req.body)
 
-            const response = await this._skillService.create({ name, level, experience, type, stack: { connect: { id: stackId } } })
+            console.log(req.body)
+
+            const response = await this._skillService.create({ name, level, experience, type, color, icon })
 
             return res.status(200).json(responseSuccess('Success', response))
         } catch (error) {
@@ -35,13 +37,14 @@ export default class SkillController {
 
     async update(req: Request, res: Response) {
         try {
+            console.log('req',req.body)
             const { id } = validId.parse(req.params)
-            const { name, level, experience, type, stackId } = updateSkill.parse(req.body)
+            const { name, level, experience, type, color, icon } = updateSkill.parse(req.body)
 
             const skill = await this._skillService.getById(id)
             if (!skill) return res.status(404).json(responseError(['Experience not found']))
 
-            const response = await this._skillService.update(id, { name, level, experience, type, stack: { connect: { id: stackId } } })
+            const response = await this._skillService.update(id, { name, level, experience, type, color, icon })
 
             return res.status(200).json(responseSuccess('Experience updated', response))
         } catch (error) {

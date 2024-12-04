@@ -5,5 +5,6 @@ export const createSkill = z.object({
     level: z.number().min(1).max(5),
     experience: z.number().min(1),
     type: z.string(),
-    stackId: z.string()
+    icon: z.string(),
+    color: z.string(),
 })

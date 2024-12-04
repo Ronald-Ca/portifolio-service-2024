@@ -5,5 +5,6 @@ export const updateSkill = z.object({
     level: z.number().min(1).max(5).optional(),
     experience: z.number().min(1).optional(),
     type: z.string().optional(),
-    stackId: z.string().optional()
+    icon: z.string().optional(),
+    color: z.string().optional(),
 })

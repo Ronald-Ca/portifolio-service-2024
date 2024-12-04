@@ -55,8 +55,6 @@ model Experience {
   role       String
   activities String[]
 
-  stacks ExperienceStack[]
-
   @@map("experiences")
 }
 
@@ -69,9 +67,8 @@ model Skill {
   level      Int
   experience Int
   type       String
-
-  stackId String @db.ObjectId
-  stack   Stack  @relation(fields: [stackId], references: [id])
+  icon       String
+  color      String
 
   @@map("skills")
 }
@@ -87,8 +84,6 @@ model Project {
   description String
   link        String
 
-  stacks ProjectStack[]
-
   @@map("projects")
 }
 
@@ -101,33 +96,7 @@ model Stack {
   icon  String
   color String
 
-  skills      Skill[]
-  experiences ExperienceStack[]
-  projects    ProjectStack[]
-
   @@map("stacks")
-}
-
-model ExperienceStack {
-  id           String     @id @default(auto()) @map("_id") @db.ObjectId
-  experience   Experience @relation(fields: [experienceId], references: [id])
-  experienceId String     @db.ObjectId
-  stack        Stack      @relation(fields: [stackId], references: [id])
-  stackId      String     @db.ObjectId
-
-  @@unique([experienceId, stackId])
-  @@map("experience_stack")
-}
-
-model ProjectStack {
-  id        String  @id @default(auto()) @map("_id") @db.ObjectId
-  project   Project @relation(fields: [projectId], references: [id])
-  projectId String  @db.ObjectId
-  stack     Stack   @relation(fields: [stackId], references: [id])
-  stackId   String  @db.ObjectId
-
-  @@unique([projectId, stackId])
-  @@map("project_stack")
 }
 
 model Contact {
