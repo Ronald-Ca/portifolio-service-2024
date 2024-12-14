@@ -24,7 +24,7 @@ export default class ProjectController {
 
     async create(req: Request, res: Response) {
         try {
-            const { name, description, link } = createProject.parse(req.body)
+            const { name, description, link, skillsId } = createProject.parse(req.body)
 
             const image = req.files?.image as fileUpload.UploadedFile
             const imageUpload = await Upload(image, 'project/image') as CloudinaryUploadResult
@@ -39,7 +39,9 @@ export default class ProjectController {
                 link,
                 image: imageUpload.secure_url,
                 video: videoUpload.secure_url || null,
-    
+                projectSkills: {
+                    connect: skillsId.map((id) => ({ id }))
+                }
             })
 
             return res.status(200).json(responseSuccess('Success', response))
@@ -52,13 +54,15 @@ export default class ProjectController {
     async update(req: Request, res: Response) {
         try {
             const { id } = validId.parse(req.params)
-            const { name, description, link } = updateProject.parse(req.body)
+            const { name, description, link, skillsId } = updateProject.parse(req.body)
 
             const project = await this._projectService.getById(id)
             if (!project) return res.status(404).json(responseError(['Experience not found']))
 
             const response = await this._projectService.update(id, {
-                name, description, link
+                name, description, link, projectSkills: {
+                    set: skillsId ? skillsId.map((id) => ({ id })) : []
+                }
             })
 
             return res.status(200).json(responseSuccess('Experience updated', response))

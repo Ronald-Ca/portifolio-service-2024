@@ -37,7 +37,6 @@ export default class SkillController {
 
     async update(req: Request, res: Response) {
         try {
-            console.log('req',req.body)
             const { id } = validId.parse(req.params)
             const { name, level, experience, type, color, icon } = updateSkill.parse(req.body)
 
