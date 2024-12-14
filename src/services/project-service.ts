@@ -4,7 +4,15 @@ import { PrismaService } from "@prisma/prisma-service";
 export default class ProjectService {
 
     async getProjects() {
-        const data = await PrismaService.project.findMany()
+        const data = await PrismaService.project.findMany({
+            include: {
+                projectSkills: {
+                    include: {
+                        skill: true,
+                    },
+                },
+            },
+        })
 
         return data
     }

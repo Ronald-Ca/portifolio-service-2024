@@ -1,8 +1,10 @@
 import { z } from 'zod'
 
 export const updateProject = z.object({
-    name: z.string().min(3).max(255).optional(),
-    description: z.string().min(3).max(255).optional(),
-    link: z.string().min(3).max(255).optional(),
-    skillsId: z.array(z.string()).optional()
+    name: z.string().optional(),
+    description: z.string().optional(),
+    link: z.string().optional(),
+    projectSkills: z
+    .union([z.string(), z.array(z.string())])
+    .transform((value) => (Array.isArray(value) ? value : [value])).optional(),
 })

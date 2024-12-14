@@ -1,6 +1,6 @@
 import { v2 as cloudinary } from 'cloudinary'
 
-export default function Upload(file: any, folder: string) {
+export function UploadImage(file: any, folder: string) {
     return new Promise((resolve, reject) => {
         cloudinary.config({
             cloud_name: process.env.CLOUD_NAME,
@@ -11,6 +11,46 @@ export default function Upload(file: any, folder: string) {
         const fileData = file.data.toString('base64')
 
         cloudinary.uploader.upload(`data:${file.mimetype};base64,${fileData}`, { folder: folder, resource_type: 'image' }, (error: any, result: any) => {
+            if (error) {
+                reject(error)
+            } else {
+                resolve(result)
+            }
+        })
+    })
+}
+
+export function UploadVideo(file: any, folder: string) {
+    return new Promise((resolve, reject) => {
+        cloudinary.config({
+            cloud_name: process.env.CLOUD_NAME,
+            api_key: process.env.CLOUD_API_KEY,
+            api_secret: process.env.CLOUD_API_SECRET
+        })
+
+        const fileData = file.data.toString('base64')
+
+        cloudinary.uploader.upload(`data:${file.mimetype};base64,${fileData}`, { folder: folder, resource_type: 'video' }, (error: any, result: any) => {
+            if (error) {
+                reject(error)
+            } else {
+                resolve(result)
+            }
+        })
+    })
+}
+
+export function UploadPdf(file: any, folder: string) {
+    return new Promise((resolve, reject) => {
+        cloudinary.config({
+            cloud_name: process.env.CLOUD_NAME,
+            api_key: process.env.CLOUD_API_KEY,
+            api_secret: process.env.CLOUD_API_SECRET
+        })
+
+        const fileData = file.data.toString('base64')
+
+        cloudinary.uploader.upload(`data:${file.mimetype};base64,${fileData}`, { folder: folder, resource_type: 'raw' }, (error: any, result: any) => {
             if (error) {
                 reject(error)
             } else {

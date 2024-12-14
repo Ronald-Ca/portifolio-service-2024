@@ -2,7 +2,7 @@ import InternalError from "@utils/internalError"
 import { Request, Response } from 'express'
 import { responseError, responseSuccess } from "@utils/jsonResponse"
 import fileUpload from "express-fileupload"
-import Upload, { CloudinaryUploadResult } from "../integrations/cloudnary"
+import { UploadImage, CloudinaryUploadResult } from "../integrations/cloudnary"
 import { validId } from "../zod-validations/global/valid-id"
 import AboutService from "../services/about-service"
 import { createAbout } from "../zod-validations/about/create-about"
@@ -27,7 +27,7 @@ export default class AboutController {
             const { person, education, address } = createAbout.parse(req.body)
 
             const image = req.files?.image as fileUpload.UploadedFile
-            const imageUpload = image && await Upload(image, 'about') as CloudinaryUploadResult
+            const imageUpload = image && await UploadImage(image, 'about') as CloudinaryUploadResult
 
             const response = await this._aboutService.create({ person, education, address, image: imageUpload ?  imageUpload.secure_url : '' })
 
@@ -50,7 +50,7 @@ export default class AboutController {
 
             const response = await this._aboutService.update(id, { person, education, address })
             if (image) {
-                const imageUpload = await Upload(image, 'anime') as CloudinaryUploadResult
+                const imageUpload = await UploadImage(image, 'anime') as CloudinaryUploadResult
                 if (!imageUpload) return res.status(400).json(responseError(['Error uploading image']))
                 await this._aboutService.update(id, { image: imageUpload.secure_url })
                 return res.status(200).json(responseSuccess('About updated', response))

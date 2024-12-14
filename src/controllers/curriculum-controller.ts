@@ -3,7 +3,7 @@ import CurriculumService from "../services/curriculum-service"
 import { Request, Response } from 'express'
 import InternalError from "@utils/internalError"
 import fileUpload from "express-fileupload"
-import Upload, { CloudinaryUploadResult, Download } from "../integrations/cloudnary"
+import { CloudinaryUploadResult, Download, UploadPdf } from "../integrations/cloudnary"
 import { validId } from "../zod-validations/global/valid-id"
 
 export default class CurriculumController {
@@ -26,7 +26,7 @@ export default class CurriculumController {
             
             const fileName = curriculum?.name as string
             
-            const upload = curriculum && await Upload(curriculum, 'curriculum') as CloudinaryUploadResult
+            const upload = curriculum && await UploadPdf(curriculum, 'curriculum') as CloudinaryUploadResult
 
             const response = await this._curriculumService.create({ curriculum: upload?.secure_url, fileName, publicId: upload?.public_id })
 
@@ -49,7 +49,7 @@ export default class CurriculumController {
 
             const fileName = curriculum?.name as string
 
-            const upload = curriculum && await Upload(curriculum, 'curriculum') as CloudinaryUploadResult
+            const upload = curriculum && await UploadPdf(curriculum, 'curriculum') as CloudinaryUploadResult
 
             const response = await this._curriculumService.update(id, { curriculum: upload?.secure_url, fileName, publicId: upload?.public_id })
 
