@@ -4,7 +4,15 @@ import { PrismaService } from '@prisma/prisma-service'
 export default class ExperienceService {
 
     async getExperience() {
-        const data = await PrismaService.experience.findMany()
+        const data = await PrismaService.experience.findMany({
+            include: {
+                experienceSkill: {
+                    include: {
+                        skill: true
+                    }
+                }
+            }
+        })
 
         return data
     }

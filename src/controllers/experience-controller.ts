@@ -5,11 +5,12 @@ import { validId } from "../zod-validations/global/valid-id"
 import ExperienceService from "../services/experience-service"
 import { createExperience } from "../zod-validations/experience/create-experience"
 import { updateExperience } from "../zod-validations/experience/update-experience"
+import { PrismaService } from "@prisma/prisma-service"
 
 export default class ExperienceController {
     private _experienceService = new ExperienceService()
 
-    async getExperience(_: Request, res: Response) {
+    async getAll(_: Request, res: Response) {
         try {
             const response = await this._experienceService.getExperience()
 
@@ -22,14 +23,30 @@ export default class ExperienceController {
 
     async create(req: Request, res: Response) {
         try {
-            const { company, period, role, activities } = createExperience.parse(req.body)
+            const { company, role, yearInitial, mothInitial, yearFinal, mothFinal, activities, experienceSkill } = createExperience.parse(req.body)
 
             const response = await this._experienceService.create({
                 company,
-                period,
                 role,
+                yearInitial,
+                mothInitial,
+                yearFinal,
+                mothFinal,
                 activities,
             })
+
+            if (experienceSkill && experienceSkill.length > 0) {
+                await Promise.all(
+                    experienceSkill.map(async (skillId: string) => {
+                        await PrismaService.experienceSkill.create({
+                            data: {
+                                experienceId: response.id,
+                                skillId,
+                            },
+                        })
+                    })
+                )
+            }
 
             return res.status(200).json(responseSuccess('Success', response))
         } catch (error) {
@@ -41,14 +58,39 @@ export default class ExperienceController {
     async update(req: Request, res: Response) {
         try {
             const { id } = validId.parse(req.params)
-            const { company, period, role, activities } = updateExperience.parse(req.body)
+            const { company, role, yearInitial, mothInitial, yearFinal, mothFinal, activities, experienceSkill } = updateExperience.parse(req.body)
 
             const experience = await this._experienceService.getById(id)
             if (!experience) return res.status(404).json(responseError(['Experience not found']))
 
             const response = await this._experienceService.update(id, {
-                company, period, role, activities
+                company,
+                role,
+                yearInitial,
+                mothInitial,
+                yearFinal,
+                mothFinal,
+                activities,
             })
+
+            if (experienceSkill && experienceSkill.length > 0) {
+                await PrismaService.experienceSkill.deleteMany({
+                    where: {
+                        experienceId: id,
+                    },
+                })
+
+                await Promise.all(
+                    experienceSkill.map(async (skillId: string) => {
+                        await PrismaService.experienceSkill.create({
+                            data: {
+                                experienceId: id,
+                                skillId,
+                            },
+                        })
+                    })
+                )
+            }
 
             return res.status(200).json(responseSuccess('Experience updated', response))
         } catch (error) {

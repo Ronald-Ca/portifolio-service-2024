@@ -68,7 +68,7 @@ export default class ProjectController {
             const { name, description, link, projectSkills } = updateProject.parse(req.body)
 
             const project = await this._projectService.getById(id)
-            if (!project) return res.status(404).json(responseError(['Experience not found']))
+            if (!project) return res.status(404).json(responseError(['Project not found']))
 
             const image = req.files?.image as fileUpload.UploadedFile
             const imageUpload = image && await UploadImage(image, 'project/image') as CloudinaryUploadResult
@@ -103,7 +103,7 @@ export default class ProjectController {
                 )
             }
 
-            return res.status(200).json(responseSuccess('Experience updated', updatedProject))
+            return res.status(200).json(responseSuccess('Project updated', updatedProject))
         } catch (error) {
             if (error instanceof InternalError) throw new InternalError(error.message)
             throw error
