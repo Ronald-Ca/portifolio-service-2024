@@ -9,7 +9,7 @@ import { updateSocialMedia } from "../zod-validations/social-media/update-social
 export default class SocialMediaController {
     private _socialMediaService = new SocialMediaService()
 
-    async getSocialMedia(_: Request, res: Response) {
+    async getAll(_: Request, res: Response) {
         try {
             const response = await this._socialMediaService.getSocialMedia()
 
