@@ -127,18 +127,6 @@ model ProjectSkill {
   @@map("project_skills")
 }
 
-model Stack {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  name  String
-  icon  String
-  color String
-
-  @@map("stacks")
-}
-
 model Contact {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   createdAt DateTime @default(now())
