@@ -40,47 +40,6 @@ export function UploadVideo(file: any, folder: string) {
     })
 }
 
-export function UploadPdf(file: any, folder: string) {
-    return new Promise((resolve, reject) => {
-        cloudinary.config({
-            cloud_name: process.env.CLOUD_NAME,
-            api_key: process.env.CLOUD_API_KEY,
-            api_secret: process.env.CLOUD_API_SECRET
-        })
-
-        const fileData = file.data.toString('base64')
-
-        cloudinary.uploader.upload(`data:${file.mimetype};base64,${fileData}`, { folder: folder, resource_type: 'raw' }, (error: any, result: any) => {
-            if (error) {
-                reject(error)
-            } else {
-                resolve(result)
-            }
-        })
-    })
-}
-
-
-export function Download(publicId: string) {
-    return new Promise((resolve) => {
-        cloudinary.config({
-            cloud_name: process.env.CLOUD_NAME,
-            api_key: process.env.CLOUD_API_KEY,
-            api_secret: process.env.CLOUD_API_SECRET
-        });
-
-        const downloadUrl = cloudinary.url(publicId, {
-            flags: 'attachment:curriculum', 
-            secure: true,
-            fetch_format: 'auto', 
-            format: 'pdf' 
-        });
-
-        resolve({ secure_url: downloadUrl });
-    });
-}
-
-
 export interface CloudinaryUploadResult {
     asset_id: string
     public_id: string
