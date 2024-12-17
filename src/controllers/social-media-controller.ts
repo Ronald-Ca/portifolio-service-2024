@@ -1,6 +1,6 @@
-import InternalError from "@utils/internalError"
+import InternalError from "../utils/internalError"
 import { Request, Response } from 'express'
-import { responseError, responseSuccess } from "@utils/jsonResponse"
+import { responseError, responseSuccess } from "../utils/jsonResponse"
 import { validId } from "../zod-validations/global/valid-id"
 import SocialMediaService from "../services/social-media-service"
 import { createSocialMedia } from "../zod-validations/social-media/create-social-media"

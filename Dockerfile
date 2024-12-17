@@ -1,23 +1,23 @@
 # Etapa de build
-FROM node:14 AS build
+FROM node:latest AS build
 
 WORKDIR /app
 
 COPY package.json yarn.lock ./
-RUN yarn install
+RUN yarn
 
 COPY . .
 
 RUN yarn build
 
 # Etapa de produção
-FROM node:14
+FROM node:latest
 
 WORKDIR /app
 
-COPY --from=build /app ./
+COPY --from=build /app/build ./
 COPY --from=build /app/node_modules ./node_modules
 
-EXPOSE 3000
+EXPOSE 1818
 
-CMD ["node", "dist/server.js"]
+CMD ["node", "./src/server.js"]

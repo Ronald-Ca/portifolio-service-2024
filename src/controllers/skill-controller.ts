@@ -1,6 +1,6 @@
-import InternalError from "@utils/internalError"
+import InternalError from "../utils/internalError"
 import { Request, Response } from 'express'
-import { responseError, responseSuccess } from "@utils/jsonResponse"
+import { responseError, responseSuccess } from "../utils/jsonResponse"
 import { validId } from "../zod-validations/global/valid-id"
 import SkillService from "../services/skill-service"
 import { createSkill } from "../zod-validations/skill/create-skill"

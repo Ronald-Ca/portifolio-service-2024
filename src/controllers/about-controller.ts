@@ -1,6 +1,6 @@
-import InternalError from "@utils/internalError"
+import InternalError from "../utils/internalError"
 import { Request, Response } from 'express'
-import { responseError, responseSuccess } from "@utils/jsonResponse"
+import { responseError, responseSuccess } from "../utils/jsonResponse"
 import fileUpload from "express-fileupload"
 import { UploadImage, CloudinaryUploadResult } from "../integrations/cloudnary"
 import { validId } from "../zod-validations/global/valid-id"

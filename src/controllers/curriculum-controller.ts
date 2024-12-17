@@ -1,7 +1,7 @@
-import { responseError, responseSuccess } from "@utils/jsonResponse"
+import { responseError, responseSuccess } from "../utils/jsonResponse"
 import CurriculumService from "../services/curriculum-service"
 import { Request, Response } from 'express'
-import InternalError from "@utils/internalError"
+import InternalError from "../utils/internalError"
 import fileUpload from "express-fileupload"
 import { validId } from "../zod-validations/global/valid-id"
 

@@ -1,11 +1,11 @@
-import InternalError from "@utils/internalError"
+import InternalError from "../utils/internalError"
 import { Request, Response } from 'express'
-import { responseError, responseSuccess } from "@utils/jsonResponse"
+import { responseError, responseSuccess } from "../utils/jsonResponse"
 import { validId } from "../zod-validations/global/valid-id"
 import ExperienceService from "../services/experience-service"
 import { createExperience } from "../zod-validations/experience/create-experience"
 import { updateExperience } from "../zod-validations/experience/update-experience"
-import { PrismaService } from "@prisma/prisma-service"
+import { PrismaService } from "../../prisma/prisma-service"
 
 export default class ExperienceController {
     private _experienceService = new ExperienceService()

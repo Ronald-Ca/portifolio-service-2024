@@ -1,7 +1,7 @@
-import InternalError from "@utils/internalError"
+import InternalError from "../utils/internalError"
 import HomeService from "../services/home-service"
 import { Request, Response } from 'express'
-import { responseError, responseSuccess } from "@utils/jsonResponse"
+import { responseError, responseSuccess } from "../utils/jsonResponse"
 import fileUpload from "express-fileupload"
 import  { UploadImage, CloudinaryUploadResult } from "../integrations/cloudnary"
 import { createHome } from "../zod-validations/home/create-home"
