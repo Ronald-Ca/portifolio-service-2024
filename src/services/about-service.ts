@@ -15,7 +15,7 @@ export default class AboutService {
         return data
     }
 
-    async create(about: Prisma.AboutCreateInput) {
+    async create(about: AboutCreateInput) {
         const data = await PrismaService.about.create({ data: about })
 
         return data
@@ -27,3 +27,13 @@ export default class AboutService {
         return data
     }
 }
+
+export type AboutCreateInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    person: string
+    education: string
+    address: string
+    image?: string | null
+  }
