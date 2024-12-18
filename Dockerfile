@@ -3,21 +3,20 @@ FROM node:latest AS build
 
 WORKDIR /app
 
+COPY package.json yarn.lock ./
+RUN yarn
+
 COPY . .
 
-RUN yarn
 RUN yarn build
 
 # Etapa de produção
 FROM node:latest
 
-ENV PORT 1818
-
 WORKDIR /app
 
-COPY --from=build /app/package.json ./
 COPY --from=build /app/build ./
-COPY --from=build /app/node_modules /node_modules
+COPY --from=build /app/node_modules ./node_modules
 
 EXPOSE 1818
 
