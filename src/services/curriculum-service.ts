@@ -1,5 +1,5 @@
-import { Prisma } from '@prisma/client'
 import { PrismaService } from '../../prisma/prisma-service'
+import { CurriculumCreateInput, CurriculumUpdateInput } from './interfaces/curriculum-type'
 
 export default class CurriculumService {
 
@@ -15,13 +15,13 @@ export default class CurriculumService {
         return data
     }
 
-    async create(curriculum: Prisma.CurriculumCreateInput) {
+    async create(curriculum: CurriculumCreateInput) {
         const data = await PrismaService.curriculum.create({ data: curriculum })
 
         return data
     }
 
-    async update(id: string, curriculum: Prisma.CurriculumUpdateInput) {
+    async update(id: string, curriculum: CurriculumUpdateInput) {
         const data = await PrismaService.curriculum.update({ where: { id }, data: curriculum })
 
         return data

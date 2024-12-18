@@ -1,5 +1,5 @@
-import { Prisma } from '@prisma/client'
 import { PrismaService } from '../../prisma/prisma-service'
+import { ExperienceCreateInput, ExperienceUpdateInput } from './interfaces/experience-type'
 
 export default class ExperienceService {
 
@@ -23,13 +23,13 @@ export default class ExperienceService {
         return data
     }
 
-    async create(experience: Prisma.ExperienceCreateInput) {
+    async create(experience: ExperienceCreateInput) {
         const data = await PrismaService.experience.create({ data: experience })
 
         return data
     }
 
-    async update(id: string, experience: Prisma.ExperienceUpdateInput) {
+    async update(id: string, experience: ExperienceUpdateInput) {
         const data = await PrismaService.experience.update({ where: { id }, data: experience })
 
         return data

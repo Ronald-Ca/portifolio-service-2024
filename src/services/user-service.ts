@@ -1,5 +1,5 @@
-import { Prisma } from '@prisma/client'
 import { PrismaService } from '../../prisma/prisma-service'
+import { UserCreateInput, UserUpdateInput } from './interfaces/user-type'
 export default class UserService {
     async getByEmail(email: string) {
         const user = await PrismaService.user.findFirst({ where: { email } })
@@ -19,13 +19,13 @@ export default class UserService {
         return users
     }
 
-    async create(user: Prisma.UserCreateInput) {
+    async create(user: UserCreateInput) {
         const data = await PrismaService.user.create({ data: user })
 
         return data
     }
 
-    async update(id: string, user: Prisma.UserUpdateInput) {
+    async update(id: string, user: UserUpdateInput) {
         const data = await PrismaService.user.update({ where: { id }, data: user })
 
         return data

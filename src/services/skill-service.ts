@@ -1,5 +1,5 @@
-import { Prisma } from '@prisma/client'
 import { PrismaService } from '../../prisma/prisma-service'
+import { SkillCreateInput, SkillUpdateInput } from './interfaces/skill-type'
 
 export default class SkillService {
 
@@ -15,13 +15,13 @@ export default class SkillService {
         return data
     }
 
-    async create(skill: Prisma.SkillCreateInput) {
+    async create(skill: SkillCreateInput) {
         const data = await PrismaService.skill.create({ data: skill })
 
         return data
     }
 
-    async update(id: string, skill: Prisma.SkillUpdateInput) {
+    async update(id: string, skill: SkillUpdateInput) {
         const data = await PrismaService.skill.update({ where: { id }, data: skill })
 
         return data

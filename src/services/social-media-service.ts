@@ -1,5 +1,5 @@
-import { Prisma } from '@prisma/client'
 import { PrismaService } from '../../prisma/prisma-service'
+import { SocialMediaCreateInput, SocialMediaUpdateInput } from './interfaces/social-media-type'
 
 export default class SocialMediaService {
 
@@ -15,13 +15,13 @@ export default class SocialMediaService {
         return data
     }
 
-    async create(stack: Prisma.SocialMediaCreateInput) {
+    async create(stack: SocialMediaCreateInput) {
         const data = await PrismaService.socialMedia.create({ data: stack })
 
         return data
     }
 
-    async update(id: string, stack: Prisma.SocialMediaUpdateInput) {
+    async update(id: string, stack: SocialMediaUpdateInput) {
         const data = await PrismaService.socialMedia.update({ where: { id }, data: stack })
 
         return data

@@ -1,5 +1,5 @@
-import { Prisma } from "@prisma/client";
 import { PrismaService } from '../../prisma/prisma-service'
+import { ProjectCreateInput, ProjectUpdateInput } from "./interfaces/project-type";
 
 export default class ProjectService {
 
@@ -25,13 +25,13 @@ export default class ProjectService {
         return data
     }
 
-    async create(project: Prisma.ProjectCreateInput) {
+    async create(project: ProjectCreateInput) {
         const data = await PrismaService.project.create({ data: project })
 
         return data
     }
 
-    async update(id: string, project: Prisma.ProjectUpdateInput) {
+    async update(id: string, project: ProjectUpdateInput) {
         const data = await PrismaService.project.update({
             where: { id },
             data: project,
