@@ -1,4 +1,4 @@
-import AboutController from '@controllers/about-controller'
+import AboutController from '../controllers/about-controller'
 import { Router, Request, Response, NextFunction } from 'express'
 
 const router = Router()

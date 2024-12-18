@@ -1,5 +1,5 @@
 import { Prisma } from '@prisma/client'
-import { PrismaService } from '@prisma/prisma-service'
+import { PrismaService } from '../../prisma/prisma-service'
 export default class UserService {
     async getByEmail(email: string) {
         const user = await PrismaService.user.findFirst({ where: { email } })

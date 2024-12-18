@@ -1,4 +1,4 @@
-import SkillController from '@controllers/skill-controller'
+import SkillController from '../controllers/skill-controller'
 import { Router, Request, Response, NextFunction } from 'express'
 
 const router = Router()

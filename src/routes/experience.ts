@@ -1,4 +1,4 @@
-import ExperienceController from '@controllers/experience-controller'
+import ExperienceController from '../controllers/experience-controller'
 import { Router, Request, Response, NextFunction } from 'express'
 
 const router = Router()

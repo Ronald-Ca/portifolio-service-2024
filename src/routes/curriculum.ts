@@ -1,4 +1,4 @@
-import CurriculumController from '@controllers/curriculum-controller'
+import CurriculumController from '../controllers/curriculum-controller'
 import { Router, Request, Response, NextFunction } from 'express'
 
 const router = Router()

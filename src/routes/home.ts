@@ -1,5 +1,5 @@
-import HomeController from "@controllers/home-controller"
-import Auth from "@middlewares/auth"
+import HomeController from "../controllers/home-controller"
+import Auth from "../middlewares/auth"
 import { Router, Request, Response, NextFunction } from 'express'
 
 const router = Router()

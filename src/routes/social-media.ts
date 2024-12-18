@@ -1,4 +1,4 @@
-import SocialMediaController from '@controllers/social-media-controller'
+import SocialMediaController from '../controllers/social-media-controller'
 import { Router, Request, Response, NextFunction } from 'express'
 
 const router = Router()

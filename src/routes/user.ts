@@ -1,4 +1,4 @@
-import UserController from '@controllers/user-controller'
+import UserController from '../controllers/user-controller'
 import { Router, Request, Response, NextFunction } from 'express'
 
 const router = Router()
