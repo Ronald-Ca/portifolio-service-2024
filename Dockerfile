@@ -1,23 +1,29 @@
 # Etapa de build
-FROM node:latest AS build
+FROM node:20 AS build
 
 WORKDIR /app
 
+# Instalar dependências
 COPY package.json yarn.lock ./
 RUN yarn
 
+# Copiar código do projeto
 COPY . .
 
+# Construir a aplicação
 RUN yarn build
 
 # Etapa de produção
-FROM node:latest
+FROM node:20
 
 WORKDIR /app
 
-COPY --from=build /app/build ./
+# Copiar arquivos necessários para o ambiente de produção
+COPY --from=build /app/dist ./dist
 COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/package.json ./package.json
 
 EXPOSE 1818
 
-CMD ["node", "./src/server.js"]
+# Iniciar o servidor
+CMD ["node", "./dist/server.js"]
