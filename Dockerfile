@@ -21,4 +21,4 @@ COPY --from=build /app/node_modules /node_modules
 
 EXPOSE 1818
 
-CMD ["yarn", "./src/server.js"]
+CMD ["node", "./src/server.js"]
