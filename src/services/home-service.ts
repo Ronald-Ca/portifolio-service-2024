@@ -2,7 +2,6 @@ import { Prisma } from '@prisma/client'
 import { PrismaService } from '../../prisma/prisma-service'
 
 export default class HomeService {
-
     async getHome() {
         const data = await PrismaService.home.findFirst()
 
