@@ -1,10 +1,10 @@
 export type UserCreateInput = {
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
+    id?: string;
+    createdAt?: Date;
+    updatedAt?: Date;
     email: string;
     password: string;
-    active: boolean;
+    active?: boolean;
 }
 
 export type UserUpdateInput = {

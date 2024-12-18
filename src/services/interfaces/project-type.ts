@@ -1,7 +1,7 @@
 export type ProjectCreateInput = {
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
+    id?: string;
+    createdAt?: Date;
+    updatedAt?: Date;
     name: string;
     image: string;
     video: string | null;
@@ -10,11 +10,11 @@ export type ProjectCreateInput = {
 }
 
 export type ProjectUpdateInput = {
-    createdAt: Date;
-    updatedAt: Date;
-    name: string;
-    image: string;
-    video: string | null;
-    description: string | null;
-    link: string | null;
+    createdAt?: Date;
+    updatedAt?: Date;
+    name?: string;
+    image?: string;
+    video?: string | null;
+    description?: string | null;
+    link?: string | null;
 }

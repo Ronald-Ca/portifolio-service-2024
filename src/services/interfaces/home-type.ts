@@ -1,7 +1,7 @@
 export type HomeCreateInput = {
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
+    id?: string;
+    createdAt?: Date;
+    updatedAt?: Date;
     title: string;
     role: string;
     description: string | null;
@@ -9,10 +9,10 @@ export type HomeCreateInput = {
 }
 
 export type HomeUpdateInput = {
-    createdAt: Date;
-    updatedAt: Date;
-    title: string;
-    role: string;
-    description: string | null;
-    image: string | null;
+    createdAt?: Date;
+    updatedAt?: Date;
+    title?: string;
+    role?: string;
+    description?: string | null;
+    image?: string | null;
 }

@@ -1,7 +1,7 @@
 export type ExperienceCreateInput = {
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
+    id?: string;
+    createdAt?: Date;
+    updatedAt?: Date;
     company: string;
     role: string;
     yearInitial: number;
@@ -12,13 +12,13 @@ export type ExperienceCreateInput = {
 }
 
 export type ExperienceUpdateInput = {
-    createdAt: Date;
-    updatedAt: Date;
-    company: string;
-    role: string;
-    yearInitial: number;
-    mothInitial: string;
-    yearFinal: number;
-    mothFinal: string;
-    activities: string[];
+    createdAt?: Date;
+    updatedAt?: Date;
+    company?: string;
+    role?: string;
+    yearInitial?: number;
+    mothInitial?: string;
+    yearFinal?: number;
+    mothFinal?: string;
+    activities?: string[];
 }
