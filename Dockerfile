@@ -15,8 +15,8 @@ ENV PORT 1818
 
 WORKDIR /app
 
-COPY --from=build /app/package.json .
-COPY --from=build /app/build .
+COPY --from=build /app/package.json ./
+COPY --from=build /app/build ./
 COPY --from=build /app/node_modules /node_modules
 
 EXPOSE 1818
