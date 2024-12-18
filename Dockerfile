@@ -10,7 +10,7 @@ COPY package.json yarn.lock ./
 RUN yarn
 
 # Gera os arquivos do Prisma Client
-RUN yarn prisma generate
+RUN yarn prisma:generate
 
 # Copia os arquivos do projeto
 COPY . .
