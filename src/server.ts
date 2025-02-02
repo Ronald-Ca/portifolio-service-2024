@@ -14,7 +14,7 @@ mongoose.connect(process.env.DATABASE_URL as string).then(() => {
 })
 
 const app = express()
-const PORT = process.env.PORT || 1818
+const PORT = process.env.PORT || 3000
 
 app.use(cors(
     {
