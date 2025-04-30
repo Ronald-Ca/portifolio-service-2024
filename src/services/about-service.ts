@@ -1,5 +1,5 @@
 import { PrismaService } from '../../prisma/prisma-service'
-import { AboutCreateInput, AboutUpdateInput } from './interfaces/about-type'
+import { AboutType } from './interfaces/about-type'
 
 export default class AboutService {
 
@@ -15,13 +15,13 @@ export default class AboutService {
         return data
     }
 
-    async create(about: AboutCreateInput) {
+    async create(about: AboutType) {
         const data = await PrismaService.about.create({ data: about })
 
         return data
     }
 
-    async update(id: string, about: AboutUpdateInput) {
+    async update(id: string, about: Partial<AboutType>) {
         const data = await PrismaService.about.update({ where: { id }, data: about })
 
         return data

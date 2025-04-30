@@ -1,4 +1,4 @@
-export type HomeCreateInput = {
+export type HomeType = {
     id?: string;
     createdAt?: Date;
     updatedAt?: Date;
@@ -6,13 +6,6 @@ export type HomeCreateInput = {
     role: string;
     description: string | null;
     image: string | null;
-}
-
-export type HomeUpdateInput = {
-    createdAt?: Date;
-    updatedAt?: Date;
-    title?: string;
-    role?: string;
-    description?: string | null;
-    image?: string | null;
+    imageBackground?: string | null;
+    colorBackground?: string | null;
 }

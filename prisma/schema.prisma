@@ -13,10 +13,12 @@ model Home {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  title       String
-  role        String
-  description String?
-  image       String?
+  title           String
+  role            String
+  description     String?
+  image           String?
+  colorBackground String?
+  imageBackground String?
 
   @@map("homes")
 }
@@ -26,12 +28,29 @@ model About {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  person    String
-  education String
-  address   String
-  image     String?
+  name  String
+  age   Int
+  city  String
+  state String
+  image String?
 
   @@map("abouts")
+}
+
+model Graduation {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  course      String
+  institution String
+  yearInit    String
+  yearFinal   String?
+  city        String?
+  state       String?
+  modality    String?
+
+  @@map("graduations")
 }
 
 model Curriculum {

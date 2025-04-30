@@ -1,19 +1,10 @@
-
-export type AboutCreateInput = {
+export type AboutType = {
   id?: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  person: string
-  education: string
-  address: string
-  image?: string | null
-}
-
-export type AboutUpdateInput = {
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  person?: string
-  education?: string
-  address?: string
+  name: string
+  age: number
+  city: string
+  state: string
   image?: string | null
 }
