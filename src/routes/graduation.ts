@@ -1,4 +1,4 @@
-import GraduationController from '@controllers/graduation-controller'
+import GraduationController from '../controllers/graduation-controller'
 import { Router, Request, Response, NextFunction } from 'express'
 
 const router = Router()
