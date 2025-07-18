@@ -7,6 +7,8 @@ import { validId } from "../zod-validations/global/valid-id"
 import { updateUser } from "../zod-validations/user/update-user"
 import { authenticateUser } from "../zod-validations/user/authenticate-user"
 import jwt from 'jsonwebtoken'
+import { encrypt } from '../utils/encrypt'
+import bcrypt from 'bcrypt'
 
 export default class UserController {
     private _userService = new UserService()
@@ -29,7 +31,8 @@ export default class UserController {
             const emailExist = await this._userService.getByEmail(email)
             if (emailExist) return res.status(400).json(responseError(['E-mail already registered']))
 
-            const response = await this._userService.create({ email, password })
+            const hashedPassword = encrypt(password)
+            const response = await this._userService.create({ email, password: hashedPassword })
 
             return res.status(200).json(responseSuccess('Success', response))
         } catch (error) {
@@ -63,8 +66,8 @@ export default class UserController {
             if (!result) return res.status(400).json(responseError(['User not found']))
             if (!result || !result.password) return res.status(400).json(responseError(['Invalid User or Invalid password']))
 
-            if (password !== result.password) return res.status(400).json(responseError(['Invalid User or Invalid password']))
-            // if (!(await bcrypt.compare(password, result.password))) return res.status(400).json(responseError(['Invalid User or Invalid password']))
+            const passwordMatch = await bcrypt.compare(password, result.password)
+            if (!passwordMatch) return res.status(400).json(responseError(['Invalid User or Invalid password']))
 
             result.password = ''
 
