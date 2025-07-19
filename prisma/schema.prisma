@@ -179,3 +179,14 @@ model User {
   password String
   active   Boolean @default(false)
 }
+
+model ContactRequest {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  email     String
+  ip        String
+  name      String
+  message   String
+  phone     String?
+  subject   String?
+}

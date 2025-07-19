@@ -4,6 +4,7 @@ import cors from 'cors'
 import fileUpload from 'express-fileupload'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
+import { env } from './utils/env'
 
 dotenv.config()
 
@@ -14,7 +15,7 @@ mongoose.connect(process.env.DATABASE_URL as string).then(() => {
 })
 
 const app = express()
-const PORT = process.env.PORT || 3000
+const PORT = env.PORT
 
 app.use(cors(
     {
