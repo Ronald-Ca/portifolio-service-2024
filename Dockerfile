@@ -1,38 +1,32 @@
-# Etapa de build
 FROM node:latest AS build
 
 WORKDIR /app
 
-# Copia arquivos de dependências
 COPY package.json yarn.lock ./
 
-# Instala as dependências
-RUN yarn
+RUN yarn install --frozen-lockfile
 
-# Copia apenas o arquivo schema.prisma e a pasta prisma (se existir)
 COPY prisma ./prisma
 
-# Gera o Prisma Client
 RUN yarn prisma generate
 
-# Copia o restante dos arquivos do projeto
 COPY . .
 
-# Compila o projeto
 RUN yarn build
 
-# Etapa de produção
-FROM node:latest
+FROM node:latest AS production
 
 WORKDIR /app
 
-# Copia os arquivos necessários para produção
 COPY --from=build /app/build ./build
-COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/package.json ./package.json
+COPY --from=build /app/yarn.lock ./yarn.lock
+COPY --from=build /app/prisma ./prisma
 
-# Expõe a porta da aplicação
-EXPOSE 1818
+RUN yarn install --production --frozen-lockfile
 
-# Comando para rodar o servidor
+RUN yarn prisma generate
+
+EXPOSE 3000
+
 CMD ["node", "./build/src/server.js"]
