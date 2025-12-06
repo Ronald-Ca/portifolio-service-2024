@@ -11,7 +11,11 @@
     "push": "prisma db push",
     "prisma:generate": "prisma generate",
     "studio": "npx prisma studio",
-    "seed:home": "tsx prisma/seed/home-seed.ts"
+    "seed:home": "tsx prisma/seed/home-seed.ts",
+    "seed:about": "tsx prisma/seed/about-seed.ts",
+    "seed:curriculum": "tsx prisma/seed/curriculum-seed.ts",
+    "seed:experience": "tsx prisma/seed/experience-seed.ts",
+    "seed:education": "tsx prisma/seed/education-seed.ts"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",

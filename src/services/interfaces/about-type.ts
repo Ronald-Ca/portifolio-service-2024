@@ -3,7 +3,7 @@ export type AboutType = {
   createdAt?: Date | string
   updatedAt?: Date | string
   name: string
-  age: number
+  birthDate: Date | string
   city: string
   state: string
   image?: string | null

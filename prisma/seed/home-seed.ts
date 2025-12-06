@@ -1,10 +1,8 @@
 import { v2 as cloudinary } from 'cloudinary'
-import { PrismaClient } from '@prisma/client'
+import { MongoClient } from 'mongodb'
 import * as fs from 'fs'
 import * as path from 'path'
 import 'dotenv/config'
-
-const prisma = new PrismaClient()
 
 interface CloudinaryUploadResult {
     secure_url: string
@@ -40,6 +38,11 @@ async function uploadImageFromFile(filePath: string, folder: string): Promise<Cl
 async function seedHome() {
     console.log('🌱 Iniciando seed do Home...')
 
+    const client = new MongoClient(process.env.DATABASE_URL!)
+    await client.connect()
+    const db = client.db()
+    const homeCollection = db.collection('homes')
+
     const assetsPath = path.join(__dirname, 'assets')
     const profileImagePath = path.join(assetsPath, 'profile.jpg')
     const backgroundImagePath = path.join(assetsPath, 'office.png')
@@ -52,30 +55,31 @@ async function seedHome() {
     const backgroundUpload = await uploadImageFromFile(backgroundImagePath, 'home')
     console.log('✅ Imagem de background enviada:', backgroundUpload.secure_url)
 
-    const existingHome = await prisma.home.findFirst()
-
     const homeData = {
         title: 'Ronald Camargo',
         role: 'Desenvolvedor de Software Pleno',
         description: 'Apaixonado por tecnologia e programação, transformo ideias em código e desafios em soluções. Cada linha de código é uma oportunidade de criar algo que faz a diferença.',
         image: profileUpload.secure_url,
         imageBackground: backgroundUpload.secure_url,
-        colorBackground: 'rgba(0, 0, 0, 0.6)'
+        colorBackground: 'rgba(0, 0, 0, 0.6)',
+        createdAt: new Date(),
+        updatedAt: new Date()
     }
+
+    const existingHome = await homeCollection.findOne({})
 
     if (existingHome) {
         console.log('🔄 Atualizando registro existente do Home...')
-        await prisma.home.update({
-            where: { id: existingHome.id },
-            data: homeData
-        })
+        await homeCollection.updateOne(
+            { _id: existingHome._id },
+            { $set: { ...homeData, updatedAt: new Date() } }
+        )
     } else {
         console.log('➕ Criando novo registro do Home...')
-        await prisma.home.create({
-            data: homeData
-        })
+        await homeCollection.insertOne(homeData)
     }
 
+    await client.close()
     console.log('✅ Seed do Home concluído com sucesso!')
 }
 
@@ -83,7 +87,4 @@ seedHome()
     .catch((error) => {
         console.error('❌ Erro ao executar seed:', error)
         process.exit(1)
-    })
-    .finally(async () => {
-        await prisma.$disconnect()
     })
