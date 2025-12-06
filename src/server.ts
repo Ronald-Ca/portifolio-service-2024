@@ -2,33 +2,26 @@ import express from 'express'
 import routes from './routes'
 import cors from 'cors'
 import fileUpload from 'express-fileupload'
-import mongoose from 'mongoose'
-import dotenv from 'dotenv'
 import { env } from './utils/env'
-
-dotenv.config()
-
-mongoose.connect(process.env.DATABASE_URL as string).then(() => {
-    console.log('Connected to database')
-}).catch((error) => {
-    console.log('Error connecting to database', error)
-})
+import { errorHandler } from './middlewares/error-handler'
 
 const app = express()
 const PORT = env.PORT
 
-app.use(cors(
-    {
-        origin: '*',
-        methods: ['GET', 'POST', 'PUT', 'DELETE'],
-        allowedHeaders: ['Content-Type', 'Authorization']
-    }
-))
+const origins = env.CORS_ORIGINS.split(',').map((origin) => origin.trim()).filter(Boolean)
+
+app.use(cors({
+    origin: origins.includes('*') ? '*' : origins,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}))
 
 app.use(fileUpload({ useTempFiles: false }))
 
 app.use(express.json())
 app.use(routes)
+
+app.use(errorHandler)
 
 app.listen(PORT, () => {
     console.log(`Server is running on ${PORT}`)

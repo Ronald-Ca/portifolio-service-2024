@@ -1,12 +1,13 @@
 import SocialMediaController from '../controllers/social-media-controller'
-import { Router, Request, Response, NextFunction } from 'express'
+import { Router } from 'express'
 import Auth from '../middlewares/auth'
+import { asyncHandler } from '../middlewares/error-handler'
 
 const router = Router()
 const controller = new SocialMediaController()
 
-router.get('/', (req: Request, res: Response, next: NextFunction) => { controller.getAll(req, res).catch((erro) => next(erro)) })
-router.post('/', Auth, (req: Request, res: Response, next: NextFunction) => { controller.create(req, res).catch((erro) => next(erro)) })
-router.put('/:id', Auth, (req: Request, res: Response, next: NextFunction) => { controller.update(req, res).catch((erro) => next(erro)) })
+router.get('/', asyncHandler(controller.getAll.bind(controller)))
+router.post('/', Auth, asyncHandler(controller.create.bind(controller)))
+router.put('/:id', Auth, asyncHandler(controller.update.bind(controller)))
 
 export default router

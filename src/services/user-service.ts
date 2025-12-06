@@ -10,7 +10,7 @@ export default class UserService {
     async getById(id: string) {
         const user = await PrismaService.user.findUnique({ where: { id } })
 
-        return !!user
+        return user
     }
 
     async getUser() {

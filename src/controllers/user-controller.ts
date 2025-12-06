@@ -46,10 +46,15 @@ export default class UserController {
             const { id } = validId.parse(req.params)
             const { email, password } = updateUser.parse(req.body)
 
-            const user = await this._userService.getByEmail(id)
+            const user = await this._userService.getById(id)
             if (!user) return res.status(404).json(responseError(['User not found']))
 
-            const response = await this._userService.update(id, { email, password })
+            const duplicatedEmail = await this._userService.getByEmail(email)
+            if (duplicatedEmail && duplicatedEmail.id !== id) return res.status(400).json(responseError(['E-mail already registered']))
+
+            const hashedPassword = encrypt(password)
+            const response = await this._userService.update(id, { email, password: hashedPassword })
+            response.password = ''
 
             return res.status(200).json(responseSuccess('Success', response))
         } catch (error) {

@@ -1,9 +1,10 @@
 import { responseError } from '../utils/jsonResponse'
 import { NextFunction, Request, Response } from 'express'
 import jwt, { JwtPayload } from 'jsonwebtoken'
+import { env } from '../utils/env'
 
 export default async function Auth(req: Request, res: Response, next: NextFunction) {
-    const authSecret = <string>process.env.AUTH_SECRET
+    const authSecret = env.AUTH_SECRET
     try {
         const authHeader = req.headers.authorization
 

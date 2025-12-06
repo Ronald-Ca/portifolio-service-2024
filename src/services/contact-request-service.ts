@@ -1,11 +1,10 @@
-import { PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient();
+import { PrismaService } from '../../prisma/prisma-service';
 
 const LIMIT_PER_HOUR = 3;
 
 export async function canSendContactRequest({ email, ip }: { email: string; ip: string }) {
   const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
-  const count = await prisma.contactRequest.count({
+  const count = await PrismaService.contactRequest.count({
     where: {
       OR: [
         { email },
@@ -18,7 +17,7 @@ export async function canSendContactRequest({ email, ip }: { email: string; ip: 
 }
 
 export async function registerContactRequest({ name, email, message, ip, phone, subject }: { name: string; email: string; message: string; ip: string; phone?: string; subject?: string }) {
-  return prisma.contactRequest.create({
+  return PrismaService.contactRequest.create({
     data: { name, email, message, ip, phone, subject },
   });
 } 

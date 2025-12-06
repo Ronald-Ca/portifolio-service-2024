@@ -5,8 +5,18 @@ import InternalError from "../utils/internalError"
 import fileUpload from "express-fileupload"
 import { validId } from "../zod-validations/global/valid-id"
 
+const DOC_TYPES = new Set(['application/pdf'])
+const MAX_DOC_BYTES = 5 * 1024 * 1024
+
 export default class CurriculumController {
     private _curriculumService = new CurriculumService()
+
+    private validateFile(file: fileUpload.UploadedFile | undefined) {
+        if (!file) return { valid: false, message: 'Curriculum file is required' }
+        if (!DOC_TYPES.has(file.mimetype)) return { valid: false, message: 'Invalid file type' }
+        if (file.size > MAX_DOC_BYTES) return { valid: false, message: 'File too large' }
+        return { valid: true }
+    }
 
     async getCurriculum(_: Request, res: Response) {
         try {
@@ -23,9 +33,8 @@ export default class CurriculumController {
         try {
             const curriculum = req.files?.curriculum as fileUpload.UploadedFile;
 
-            if (!curriculum) {
-                return res.status(400).json({ message: "Curriculum file is required" });
-            }
+            const validation = this.validateFile(curriculum)
+            if (!validation.valid) return res.status(400).json(responseError([validation.message || 'Invalid curriculum']))
 
             const base64 = curriculum.data.toString('base64');
             const mimeType = curriculum.mimetype;
@@ -55,10 +64,9 @@ export default class CurriculumController {
             }
     
             const curriculum = req.files?.curriculum as fileUpload.UploadedFile;
-    
-            if (!curriculum) {
-                return res.status(400).json(responseError(['Curriculum file is required']));
-            }
+
+            const validation = this.validateFile(curriculum)
+            if (!validation.valid) return res.status(400).json(responseError([validation.message || 'Invalid curriculum']))
 
             const base64 = curriculum.data.toString('base64');
             const mimeType = curriculum.mimetype; 

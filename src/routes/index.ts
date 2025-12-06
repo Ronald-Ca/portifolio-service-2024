@@ -1,4 +1,4 @@
-import express from 'express'
+import { Router } from 'express'
 import home from './home'
 import about from './about'
 import experience from './experience'
@@ -10,17 +10,17 @@ import curriculum from './curriculum'
 import education from './graduation'
 import contact from './contact'
 
-const server = express()
+const router = Router()
 
-server.use('/home', home)
-server.use('/about', about)
-server.use('/experience', experience)
-server.use('/social-media', social)
-server.use('/user', user)
-server.use('/skill', skill)
-server.use('/project', project)
-server.use('/curriculum', curriculum)
-server.use('/education', education)
-server.use('/contact', contact)
+router.use('/home', home)
+router.use('/about', about)
+router.use('/experience', experience)
+router.use('/social-media', social)
+router.use('/user', user)
+router.use('/skill', skill)
+router.use('/project', project)
+router.use('/curriculum', curriculum)
+router.use('/education', education)
+router.use('/contact', contact)
 
-export default server
+export default router
