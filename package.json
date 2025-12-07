@@ -15,7 +15,8 @@
     "seed:about": "tsx prisma/seed/about-seed.ts",
     "seed:curriculum": "tsx prisma/seed/curriculum-seed.ts",
     "seed:experience": "tsx prisma/seed/experience-seed.ts",
-    "seed:education": "tsx prisma/seed/education-seed.ts"
+    "seed:education": "tsx prisma/seed/education-seed.ts",
+    "seed:skill": "tsx prisma/seed/skill-seed.ts"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",

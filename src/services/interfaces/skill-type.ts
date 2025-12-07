@@ -1,20 +1,23 @@
+export type SkillType = 'skill' | 'competence'
+export type SkillLevel = 1 | 2 | 3 | 4 | 5
+
 export type SkillCreateInput = {
     id?: string;
     createdAt?: Date;
     updatedAt?: Date;
     name: string;
-    level: number;
+    level: SkillLevel;
     experience: number;
-    type: string;
+    type: SkillType;
     icon: string;
     color?: string | null;
 }
 
 export type SkillUpdateInput = {
     name?: string;
-    level?: number;
+    level?: SkillLevel;
     experience?: number;
-    type?: string;
+    type?: SkillType;
     icon?: string;
     color?: string | null;
 }
