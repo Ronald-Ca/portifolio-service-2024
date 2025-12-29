@@ -42,6 +42,27 @@ async function seedHome() {
     await client.connect()
     const db = client.db()
     const homeCollection = db.collection('homes')
+    const skillCollection = db.collection('skills')
+
+    // Buscar as main skills: React, TypeScript, MongoDB, JavaScript, Express
+    console.log('🔍 Buscando main skills...')
+    const mainSkillNames = ['React', 'TypeScript', 'MongoDB', 'JavaScript', 'Express']
+    const mainSkillsDocs = await skillCollection.find({ name: { $in: mainSkillNames } }).toArray()
+
+    if (mainSkillsDocs.length !== mainSkillNames.length) {
+        const foundNames = mainSkillsDocs.map(s => s.name)
+        const missingNames = mainSkillNames.filter(n => !foundNames.includes(n))
+        console.error(`❌ Skills não encontradas: ${missingNames.join(', ')}. Execute seed:skill primeiro.`)
+        await client.close()
+        process.exit(1)
+    }
+
+    // Ordenar na mesma ordem do array mainSkillNames
+    const mainSkillIds = mainSkillNames.map(name => {
+        const skill = mainSkillsDocs.find(s => s.name === name)
+        return skill!._id.toString()
+    })
+    console.log('✅ Main skills encontradas:', mainSkillsDocs.map(s => s.name).join(', '))
 
     const assetsPath = path.join(__dirname, 'assets')
     const profileImagePath = path.join(assetsPath, 'profile.jpg')
@@ -62,6 +83,7 @@ async function seedHome() {
         image: profileUpload.secure_url,
         imageBackground: backgroundUpload.secure_url,
         colorBackground: 'rgba(0, 0, 0, 0.6)',
+        mainSkills: mainSkillIds,
         createdAt: new Date(),
         updatedAt: new Date()
     }

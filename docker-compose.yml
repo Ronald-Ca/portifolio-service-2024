@@ -4,7 +4,7 @@ services:
   mongo:
     image: mongo
     container_name: portifolio
-    restart: always
+    restart: "no"
     ports:
       - "27017:27017"
     environment:
@@ -14,7 +14,7 @@ services:
   mongo-express:
     image: mongo-express
     container_name: mongo-express-portifolio
-    restart: always
+    restart: "no"
     ports:
       - 8081:8081
     environment:
@@ -26,7 +26,7 @@ services:
   backend:
     build: .
     container_name: portifolio-backend
-    restart: always
+    restart: "no"
     ports:
       - "3000:3000"
     env_file:

@@ -19,6 +19,7 @@ model Home {
   image           String?
   colorBackground String?
   imageBackground String?
+  mainSkills      String[] @db.ObjectId
 
   @@map("homes")
 }
