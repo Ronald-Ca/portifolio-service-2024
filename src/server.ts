@@ -8,10 +8,11 @@ import { errorHandler } from './middlewares/error-handler'
 const app = express()
 const PORT = env.PORT
 
-const origins = env.CORS_ORIGINS.split(',').map((origin) => origin.trim()).filter(Boolean)
+// TODO: Voltar para usar env.CORS_ORIGINS depois do teste
+// const origins = env.CORS_ORIGINS.split(',').map((origin) => origin.trim()).filter(Boolean)
 
 app.use(cors({
-    origin: origins.includes('*') ? '*' : origins,
+    origin: '*', // Temporário para teste - libera todas as origens
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }))
