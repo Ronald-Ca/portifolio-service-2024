@@ -1,5 +1,8 @@
 FROM node:20-alpine AS build
 
+# Instala OpenSSL necessário para o Prisma
+RUN apk add --no-cache openssl
+
 WORKDIR /app
 
 COPY package.json yarn.lock ./
@@ -15,6 +18,9 @@ COPY . .
 RUN yarn build
 
 FROM node:20-alpine AS production
+
+# Instala OpenSSL necessário para o Prisma
+RUN apk add --no-cache openssl
 
 WORKDIR /app
 
