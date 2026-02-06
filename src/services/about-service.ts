@@ -22,7 +22,7 @@ export default class AboutService {
         if (data) {
             return {
                 ...data,
-                age: calculateAge(data.birthDate)
+                age: data.birthDate ? calculateAge(data.birthDate) : undefined
             }
         }
 

@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 export const updateSkill = z.object({
-    name: z.string().min(3).max(255).optional(),
+    name: z.string().min(1).max(255).optional(),
     level: z.union([
         z.literal(1),
         z.literal(2),

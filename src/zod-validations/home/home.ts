@@ -5,6 +5,7 @@ export const createHome = z.object({
     role: z.string().min(3).max(255),
     description: z.string().min(3).max(255),
     colorBackground: z.string().optional(),
+    mainSkills: z.array(z.string()).optional(),
 })
 
 export const updateHome = createHome.partial()

@@ -22,18 +22,15 @@ export default class ExperienceController {
 
     async create(req: Request, res: Response) {
         try {
-            const { company, role, yearInitial, mothInitial, yearFinal, mothFinal, activities, experienceSkill } = createExperience.parse(req.body)
-
+            const parsed = createExperience.parse(req.body)
+            const { experienceSkill, ...data } = parsed
+            const payload = {
+                ...data,
+                yearFinal: data.currentJob ? undefined : data.yearFinal ?? undefined,
+                mothFinal: data.currentJob ? 'Present' : (data.mothFinal ?? undefined),
+            }
             const response = await this._experienceService.create(
-                {
-                    company,
-                    role,
-                    yearInitial,
-                    mothInitial,
-                    yearFinal,
-                    mothFinal,
-                    activities,
-                },
+                payload as any,
                 experienceSkill || [],
             )
 
@@ -47,22 +44,18 @@ export default class ExperienceController {
     async update(req: Request, res: Response) {
         try {
             const { id } = validId.parse(req.params)
-            const { company, role, yearInitial, mothInitial, yearFinal, mothFinal, activities, experienceSkill } = updateExperience.parse(req.body)
-
+            const parsed = updateExperience.parse(req.body)
+            const { experienceSkill, ...data } = parsed
             const experience = await this._experienceService.getById(id)
             if (!experience) return res.status(404).json(responseError(['Experience not found']))
-
+            const payload = { ...data }
+            if (data.currentJob) {
+                payload.yearFinal = undefined
+                payload.mothFinal = 'Present'
+            }
             const response = await this._experienceService.update(
                 id,
-                {
-                    company,
-                    role,
-                    yearInitial,
-                    mothInitial,
-                    yearFinal,
-                    mothFinal,
-                    activities,
-                },
+                payload as any,
                 experienceSkill,
             )
 

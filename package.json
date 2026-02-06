@@ -9,7 +9,7 @@
     "dev": "tsx watch src/server.ts",
     "start": "node -r tsconfig-paths/register build/server.js",
     "push": "prisma db push",
-    "prisma:generate": "prisma generate",
+    "generate": "prisma generate",
     "studio": "npx prisma studio",
     "seed:home": "tsx prisma/seed/home-seed.ts",
     "seed:about": "tsx prisma/seed/about-seed.ts",

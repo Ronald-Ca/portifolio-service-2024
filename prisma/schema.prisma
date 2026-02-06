@@ -30,7 +30,7 @@ model About {
   updatedAt DateTime @updatedAt
 
   name      String
-  birthDate DateTime
+  birthDate DateTime?
   city      String
   state     String
   image     String?
@@ -89,13 +89,16 @@ model Experience {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  company     String
-  role        String
-  yearInitial Int
-  mothInitial String
-  yearFinal   Int
-  mothFinal   String   @default("Present")
-  activities  String[]
+  company      String
+  role         String
+  yearInitial  Int
+  mothInitial  String
+  yearFinal    Int?
+  mothFinal    String?  @default("Present")
+  currentJob   Boolean  @default(false)
+  modality     String?
+  description  String?
+  activities   String[]
 
   experienceSkill ExperienceSkill[]
 

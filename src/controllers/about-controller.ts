@@ -23,16 +23,18 @@ export default class AboutController {
 
     async create(req: Request, res: Response) {
         try {
-            const { name, age, city, state } = createAbout.parse(req.body)
-
-            const today = new Date()
-            const birthYear = today.getFullYear() - age
-            const birthDate = new Date(birthYear, 0, 1)
+            const { name, birthDate, city, state } = createAbout.parse(req.body)
 
             const image = req.files?.image as fileUpload.UploadedFile
             const imageUpload = image && await UploadImage(image, 'about') as CloudinaryUploadResult
 
-            const response = await this._aboutService.create({ name, birthDate, city, state, image: imageUpload ? imageUpload.secure_url : '' })
+            const response = await this._aboutService.create({
+                name,
+                birthDate: new Date(birthDate),
+                city,
+                state,
+                image: imageUpload ? imageUpload.secure_url : '',
+            })
 
             return res.status(200).json(responseSuccess('Success', response))
         } catch (error) {
@@ -44,25 +46,27 @@ export default class AboutController {
     async update(req: Request, res: Response) {
         try {
             const { id } = validId.parse(req.params)
-            const { name, age, city, state } = updateAbout.parse(req.body)
+            const parsed = updateAbout.parse(req.body)
 
             const image = req.files?.image as fileUpload.UploadedFile
             const imageUpload = image && await UploadImage(image, 'about') as CloudinaryUploadResult
-            
+
             const about = await this._aboutService.getAboutById(id)
             if (!about) return res.status(404).json(responseError(['About not found']))
 
-            const updateData: any = { name, city, state }
-            if (age !== undefined) {
-                const today = new Date()
-                const birthYear = today.getFullYear() - age
-                updateData.birthDate = new Date(birthYear, 0, 1)
+            const updateData: Record<string, unknown> = {
+                name: parsed.name ?? about.name,
+                city: parsed.city ?? about.city,
+                state: parsed.state ?? about.state,
+            }
+            if (parsed.birthDate !== undefined) {
+                updateData.birthDate = new Date(parsed.birthDate)
             }
             if (imageUpload) {
                 updateData.image = imageUpload.secure_url
             }
-   
-            const response = await this._aboutService.update(id, updateData)
+
+            const response = await this._aboutService.update(id, updateData as any)
 
             return res.status(200).json(responseSuccess('About updated', response))
         } catch (error) {

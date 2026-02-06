@@ -23,7 +23,8 @@ export default class HomeController {
 
     async create(req: Request, res: Response) {
         try {
-            const { title, role, description, colorBackground } = createHome.parse(req.body)
+            const body = typeof req.body?.mainSkills === 'string' ? { ...req.body, mainSkills: JSON.parse(req.body.mainSkills || '[]') } : req.body
+            const { title, role, description, colorBackground, mainSkills } = createHome.parse(body)
 
             const image = req.files?.image as fileUpload.UploadedFile
             const imageUpload = await UploadImage(image, 'home') as CloudinaryUploadResult
@@ -31,7 +32,15 @@ export default class HomeController {
             const imageBackground = req.files?.imageBackground as fileUpload.UploadedFile
             const imageBackgroundUpload = imageBackground && await UploadImage(imageBackground, 'home') as CloudinaryUploadResult
 
-            const response = await this._homeService.create({ title, role, description, image: imageUpload.secure_url, imageBackground: imageBackgroundUpload.secure_url, colorBackground })
+            const response = await this._homeService.create({
+                title,
+                role,
+                description,
+                image: imageUpload.secure_url,
+                imageBackground: imageBackgroundUpload?.secure_url,
+                colorBackground,
+                mainSkills: mainSkills ?? [],
+            })
 
             return res.status(200).json(responseSuccess('Success', response))
         } catch (error) {
@@ -43,7 +52,8 @@ export default class HomeController {
     async update(req: Request, res: Response) {
         try {
             const { id } = validId.parse(req.params)
-            const { title, role, description, colorBackground } = updateHome.parse(req.body)
+            const body = typeof req.body?.mainSkills === 'string' ? { ...req.body, mainSkills: JSON.parse(req.body.mainSkills || '[]') } : req.body
+            const parsed = updateHome.parse(body)
 
             const image = req.files?.image as fileUpload.UploadedFile
             const imageUpload = image && await UploadImage(image, 'home') as CloudinaryUploadResult
@@ -54,14 +64,17 @@ export default class HomeController {
             const home = await this._homeService.getById(id)
             if (!home) return res.status(404).json(responseError(['Home not found']))
 
-            const updatedHome = await this._homeService.update(id, {
-                title,
-                role,
-                description,
+            const updateData = {
+                title: parsed.title,
+                role: parsed.role,
+                description: parsed.description,
                 image: imageUpload ? imageUpload.secure_url : home.image,
-                imageBackground: imageBackgroundUpload ? imageBackgroundUpload.secure_url : '',
-                colorBackground: colorBackground ? colorBackground : ''
-            })
+                imageBackground: imageBackgroundUpload ? imageBackgroundUpload.secure_url : (home.imageBackground ?? ''),
+                colorBackground: parsed.colorBackground ?? '',
+            }
+            if (parsed.mainSkills !== undefined) (updateData as any).mainSkills = parsed.mainSkills
+
+            const updatedHome = await this._homeService.update(id, updateData)
 
             return res.status(200).json(responseSuccess('Home updated', updatedHome))
         } catch (error) {

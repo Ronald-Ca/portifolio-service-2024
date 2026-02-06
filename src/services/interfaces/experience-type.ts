@@ -6,8 +6,11 @@ export type ExperienceCreateInput = {
     role: string;
     yearInitial: number;
     mothInitial: string;
-    yearFinal: number;
-    mothFinal: string;
+    yearFinal?: number | null;
+    mothFinal?: string | null;
+    currentJob?: boolean;
+    modality?: string | null;
+    description?: string | null;
     activities: string[];
 }
 
@@ -18,7 +21,10 @@ export type ExperienceUpdateInput = {
     role?: string;
     yearInitial?: number;
     mothInitial?: string;
-    yearFinal?: number;
-    mothFinal?: string;
+    yearFinal?: number | null;
+    mothFinal?: string | null;
+    currentJob?: boolean;
+    modality?: string | null;
+    description?: string | null;
     activities?: string[];
 }
